@@ -7,7 +7,7 @@ namespace Library.Api.Repository
         Task<UserViewModel> CreateUser(UserViewModel user);
         Task<IEnumerable<UserViewModel>> GetUsers();
         Task<UserViewModel> GetUserById(int userId);
-        Task<UserViewModel> UpdateUser(UserViewModel user, int userId);
+        Task<UserUpdateViewModel> UpdateUser(UserUpdateViewModel user, int userId);
         Task<bool> DeleteUser(int userId);
         Task<IEnumerable<UserViewModelWithOverdue>> TopUsersByOverdueTime();
     }

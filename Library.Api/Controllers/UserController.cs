@@ -73,11 +73,11 @@ namespace Library.Api.Controllers
 
 
         [HttpPut]
-        public async Task<object> Put([FromBody] UserViewModel user, int userId)
+        public async Task<object> Put([FromBody] UserUpdateViewModel user, int userId)
         {
             try
             {
-                UserViewModel model = await _userRepository.UpdateUser(user, userId);
+                UserUpdateViewModel model = await _userRepository.UpdateUser(user, userId);
                 _response.Result = model;
             }
             catch (Exception ex)

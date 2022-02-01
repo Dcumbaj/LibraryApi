@@ -64,7 +64,7 @@ namespace Library.Api.Repository
 
         public async Task<IEnumerable<UserViewModel>> GetUsers()
         {
-            List<User> userList = await _db.Users.ToListAsync();
+            List<User> userList = await _db.Users.Include(x => x.Contacts).ToListAsync();
             List<UserViewModel> _userList = new List<UserViewModel>();
 
             foreach (var user in userList)
@@ -82,18 +82,17 @@ namespace Library.Api.Repository
             return _userList;
         }
 
-        public async Task<UserViewModel> UpdateUser(UserViewModel user, int userId)
+        public async Task<UserUpdateViewModel> UpdateUser(UserUpdateViewModel user, int userId)
         {
 
             var _user = await _db.Users.FirstOrDefaultAsync(n => n.Id == userId);
 
-            if (user != null)
+            if (_user != null)
             {
                 _user.FirstName = user.FirstName;
                 _user.LastName = user.LastName;
                 _user.Gender = user.Gender;
                 _user.DateOfBirth = user.DateOfBirth;
-                _user.Contacts = user.Contacts;
 
                 _db.Users.Update(_user);
 

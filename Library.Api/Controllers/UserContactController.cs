@@ -61,7 +61,15 @@ namespace Library.Api.Controllers
             try
             {
                 UserContactViewModel model = await _userContactRepository.CreateUserContact(userContact);
-                _response.Result = model;
+                if (model == null)
+                {
+                    _response.Result = "The user with id:" + userContact.UserId + " does not exist";
+                }
+                else
+                {
+                    _response.Result = model;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -79,7 +87,14 @@ namespace Library.Api.Controllers
             try
             {
                 UserContactViewModel model = await _userContactRepository.UpdateUserContact(userContact, userContactId);
-                _response.Result = model;
+                if (model == null)
+                {
+                    _response.Result = "The user with id:" + userContact.UserId + " does not exist";
+                }
+                else
+                {
+                    _response.Result = model;
+                }
             }
             catch (Exception ex)
             {

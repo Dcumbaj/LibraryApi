@@ -35,6 +35,12 @@ namespace Library.Api.Repository
         public async Task<UserContactViewModel> GetUserContactById(int userContactId)
         {
             UserContact userContact = await _db.UserContacts.Where(x => x.Id == userContactId).FirstOrDefaultAsync();
+
+            if (userContact == null)
+            {
+                return null;
+            }
+
             UserContactViewModel _userContact = new UserContactViewModel()
             {
                 PhoneNumber = userContact.PhoneNumber,

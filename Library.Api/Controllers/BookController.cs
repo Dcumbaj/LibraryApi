@@ -19,7 +19,7 @@ namespace Library.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("GetBookRentHistory/{id}")]
         public async Task<object> Get(int id)
         {
             try
