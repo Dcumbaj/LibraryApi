@@ -24,11 +24,14 @@ namespace Library.Api.Repository
                 Contacts = user.Contacts
             };
 
-            foreach (var contact in _user.Contacts)
+            if (_user.Contacts != null)
             {
-                if (_db.UserContacts.FirstOrDefault(x => x.Id == contact.Id) == null)
+                foreach (var contact in _user.Contacts)
                 {
-                    _db.UserContacts.Add(contact);
+                    if (_db.UserContacts.FirstOrDefault(x => x.Id == contact.Id) == null)
+                    {
+                        _db.UserContacts.Add(contact);
+                    }
                 }
             }
 
@@ -42,6 +45,11 @@ namespace Library.Api.Repository
         public async Task<UserViewModel> GetUserById(int userId)
         {
             User user = await _db.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return null;
+            }
+
             UserViewModel viewModel = new UserViewModel()
             {
                 FirstName = user.FirstName,
@@ -121,7 +129,7 @@ namespace Library.Api.Repository
 
             foreach (var user in userList)
             {
-                foreach (var rent in user.RentHistories.Where(x => x.DueDate < DateTime.Today))
+                foreach (var rent in user.RentHistories.Where(x => x.DueDate < DateTime.Today && x.RentStatusId == (int)RentStatusType.NotReturned))
                 {
                     user.TotalOvedueInDays += (DateTime.Today - rent.RentDate).Days;
                 }

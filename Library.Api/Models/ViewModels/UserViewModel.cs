@@ -6,7 +6,7 @@
         public string LastName { get; set; }
         public string Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public List<UserContact> Contacts { get; set; }
+        public List<UserContact>? Contacts { get; set; }
     }
 
     public class UserViewModelWithOverdue

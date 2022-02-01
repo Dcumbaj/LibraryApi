@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Title { get; set; }
         public int NumberOfCopies { get; set; }
-        public int NumberOfRents { get; set; }
+        private int? NumberOfRents { get; set; }
         public DateTime PublishDate { get; set; }
         public decimal BookPrice { get; set; }
         public int BibliothecaId { get; set; }
