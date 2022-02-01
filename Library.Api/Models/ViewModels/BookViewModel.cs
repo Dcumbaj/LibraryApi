@@ -1,8 +1,7 @@
-﻿namespace Library.Api.Models
+﻿namespace Library.Api.Models.ViewModels
 {
-    public class Book
+    public class BookViewModel
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public int NumberOfCopies { get; set; }
         public int NumberOfRents { get; set; }
