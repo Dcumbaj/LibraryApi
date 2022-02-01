@@ -114,10 +114,10 @@ namespace Library.Api.Repository
             }
         }
 
-        public async Task<IEnumerable<UserViewModel>> TopUsersByOverdueTime()
+        public async Task<IEnumerable<UserViewModelWithOverdue>> TopUsersByOverdueTime()
         {
             List<User> userList = await _db.Users.Include(x => x.RentHistories).ToListAsync();
-            List<UserViewModel> _userList = new List<UserViewModel>();
+            List<UserViewModelWithOverdue> _userList = new List<UserViewModelWithOverdue>();
 
             foreach (var user in userList)
             {
@@ -129,7 +129,7 @@ namespace Library.Api.Repository
 
             foreach (var user in userList)
             {
-                _userList.Add(new UserViewModel()
+                _userList.Add(new UserViewModelWithOverdue()
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,

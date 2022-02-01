@@ -9,6 +9,6 @@ namespace Library.Api.Repository
         Task<UserViewModel> GetUserById(int userId);
         Task<UserViewModel> UpdateUser(UserViewModel user, int userId);
         Task<bool> DeleteUser(int userId);
-        Task<IEnumerable<UserViewModel>> TopUsersByOverdueTime();
+        Task<IEnumerable<UserViewModelWithOverdue>> TopUsersByOverdueTime();
     }
 }   

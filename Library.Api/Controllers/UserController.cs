@@ -112,7 +112,7 @@ namespace Library.Api.Controllers
         {
             try
             {
-                IEnumerable<UserViewModel> user = await _userRepository.TopUsersByOverdueTime();
+                IEnumerable<UserViewModelWithOverdue> user = await _userRepository.TopUsersByOverdueTime();
                 _response.Result = user;
             }
             catch (Exception ex)
