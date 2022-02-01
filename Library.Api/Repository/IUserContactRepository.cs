@@ -6,8 +6,8 @@ namespace Library.Api.Repository
     {
         Task<IEnumerable<UserContactViewModel>> GetUserContacts();
         Task<UserContactViewModel> GetUserContactById(int userContactId);
-        Task<UserContactViewModel> CreateUserContact(UserContactViewModel user);
-        Task<UserContactViewModel> UpdateUserContact(UserContactViewModel user, int userId);
-        Task<bool> DeleteUserContact(int userId);
+        Task<UserContactViewModel> CreateUserContact(UserContactViewModel userContact);
+        Task<UserContactViewModel> UpdateUserContact(UserContactViewModel userContact, int userContactId);
+        Task<bool> DeleteUserContact(int userContactId);
     }
 }

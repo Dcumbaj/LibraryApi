@@ -20,6 +20,7 @@ namespace Library.Api.Repository
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = user.Gender,
+                DateOfBirth = user.DateOfBirth,
                 Contacts = user.Contacts
             };
 
@@ -34,6 +35,62 @@ namespace Library.Api.Repository
             _db.Users.Add(_user);
             
             await  _db.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<UserViewModel> GetUserById(int userId)
+        {
+            User user = await _db.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            UserViewModel viewModel = new UserViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                DateOfBirth = user.DateOfBirth,
+                Contacts = user.Contacts
+            };
+
+            return viewModel;
+        }
+
+        public async Task<IEnumerable<UserViewModel>> GetUsers()
+        {
+            List<User> userList = await _db.Users.ToListAsync();
+            List<UserViewModel> _userList = new List<UserViewModel>();
+
+            foreach (var user in userList)
+            {
+                _userList.Add(new UserViewModel()
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Gender = user.Gender,
+                    DateOfBirth = user.DateOfBirth,
+                    Contacts = user.Contacts
+                });
+            }
+            
+            return _userList;
+        }
+
+        public async Task<UserViewModel> UpdateUser(UserViewModel user, int userId)
+        {
+
+            var _user = await _db.Users.FirstOrDefaultAsync(n => n.Id == userId);
+
+            if (user != null)
+            {
+                _user.FirstName = user.FirstName;
+                _user.LastName = user.LastName;
+                _user.Gender = user.Gender;
+                _user.DateOfBirth = user.DateOfBirth;
+                _user.Contacts = user.Contacts;
+
+                _db.Users.Update(_user);
+
+                await _db.SaveChangesAsync();
+            }
 
             return user;
         }
@@ -57,42 +114,9 @@ namespace Library.Api.Repository
             }
         }
 
-        public async Task<UserViewModel> GetUserById(int userId)
-        {
-            User user = await _db.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
-            UserViewModel viewModel = new UserViewModel()
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Gender = user.Gender,
-                Contacts = user.Contacts
-            };
-
-            return viewModel;
-        }
-
-        public async Task<IEnumerable<UserViewModel>> GetUsers()
-        {
-            List<User> userList = await _db.Users.ToListAsync();
-            List<UserViewModel> _userList = new List<UserViewModel>();
-
-            foreach (var user in userList)
-            {
-                _userList.Add(new UserViewModel()
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Gender = user.Gender,
-                    Contacts = user.Contacts
-                });
-            }
-
-            return _userList;
-        }
-
         public async Task<IEnumerable<UserViewModel>> TopUsersByOverdueTime()
         {
-            List<User> userList = await _db.Users.ToListAsync();
+            List<User> userList = await _db.Users.Include(x => x.RentHistories).ToListAsync();
             List<UserViewModel> _userList = new List<UserViewModel>();
 
             foreach (var user in userList)
@@ -101,38 +125,22 @@ namespace Library.Api.Repository
                 {
                     user.TotalOvedueInDays += (DateTime.Today - rent.RentDate).Days;
                 }
+            }
 
+            foreach (var user in userList)
+            {
                 _userList.Add(new UserViewModel()
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Gender = user.Gender,
+                    DateOfBirth = user.DateOfBirth,
                     Contacts = user.Contacts,
                     TotalOvedueInDays = user.TotalOvedueInDays
-                }) ;
+                });
             }
 
             return _userList.Where(x => x.TotalOvedueInDays > 0);
-        }
-
-        public async Task<UserViewModel> UpdateUser(UserViewModel user, int userId)
-        {
-
-            var _user = _db.Users.FirstOrDefault(n => n.Id == userId);
-
-            if (user != null)
-            {
-                _user.FirstName = user.FirstName;
-                _user.LastName = user.LastName;
-                _user.Gender = user.Gender;
-                _user.Contacts = user.Contacts;
-
-                _db.Users.Update(_user);
-
-                await _db.SaveChangesAsync();
-            }
-
-            return user;
         }
     }
 }
